@@ -33,3 +33,5 @@ class sequenceHMM:
         self.HMM = hmm
         self.A = self.HMM.M
 
+    def setrandomHMM(self):
+
