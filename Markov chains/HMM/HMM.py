@@ -2,22 +2,26 @@ import numpy as np
 
 
 class HMM:
-    def __init__(self, N, M, Pi, P, C):
+    def __init__(self, N=None, M=None, Pi=None, P=None, C=None, name_file="HMM.txt"):
+        if N == None or M == None:
+            self.initfromfile(name_file)
+            return
         self.N = N
         self.M = M
+        if Pi == None or P == None or C == None:
+            self.initrandomarg(N, M)
+            return
         self.Pi = Pi
         self.P = P
         self.C = C
 
-    def __init__(self, N, M):
+    def initrandomarg(self, N, M):
         self.N = N
         self.M = M
-        self.P = np.eye(N, dtype=float)
-        self.Pi = np.eye(N, 1, dtype=float)
-        self.C = np.eye(N, M, dtype=float)
-
-    def __init__(self, name_file="HMM.txt"):
-        self.initfromfile(name_file)
+        self.P = np.ones((N,N))/N
+        self.Pi = [1/N]*N
+        self.Pi = np.array(self.Pi)
+        self.C = np.ones((N,M))/N
 
 
     def initfromfile(self, name_file):
@@ -47,5 +51,5 @@ class HMM:
     def __getattribute__(self, *args, **kwargs):
         return super().__getattribute__(*args, **kwargs)
 
-A = HMM()
-print(A)
+A = HMM(2, 2)
+# print(A)

@@ -33,5 +33,10 @@ class sequenceHMM:
         self.HMM = hmm
         self.A = self.HMM.M
 
-    def setrandomHMM(self):
+    def seteyeHMM(self, N, M):
+        if M<self.A:
+            raise Exception("Error. Value of sequence doesn't belong this HMM.")
+        self.HMM = HMM.HMM(N, M)
+        self.A = self.HMM.M
+
 
