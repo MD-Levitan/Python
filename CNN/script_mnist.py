@@ -5,6 +5,10 @@ Created on Dec 1, 2016
 '''
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.colors as colors
+import struct
+from PIL import Image
+
 from NearestNeighbor import *
 from Backpropagation import *
 
@@ -20,8 +24,44 @@ Train_labels=Train[1]
 Valid_images=Valid[0]
 Valid_labels=Valid[1]
 
+def float_to_hex(f):
+    return hex(struct.unpack('<I', struct.pack('<f', f))[0])
+
+def float_to_RGB(f):
+    value= str(float_to_hex(f))[2:]
+    lv = len(value)
+    if value == "0":
+        return (0, 0, 0)
+    return tuple(int(value[i:i + lv / 3], 16) for i in range(0, lv, lv / 3))
+
+
 def PlotSample(ARR_im, ARR_lb,num):
-    util.exit_with_error("COMPLETE THE FUNCTION ACCORDING TO LABSPEC!!\n")
+    for i in xrange(len(ARR_im)):
+        new_img = Image.new("RGB", (28, 28))
+        new_img.putdata([float_to_RGB(c) for c in ARR_im[i]])
+        new_img.save("images/out{0}.png".format(i))
+
+    fig = plt.figure()
+     
+    ax1 = plt.subplot2grid((2, 2), (0, 0))
+    ax2 = plt.subplot2grid((2, 2), (0, 1))
+    ax3 = plt.subplot2grid((2, 2), (1, 0))
+    ax4 = plt.subplot2grid((2, 2), (1, 1))
+
+
+    i = -1
+    jj = [0, 0, 1, 1]
+    kk = [0, 1, 0, 1]
+    for ax in fig.axes:
+        i += 1
+        stext = 'ax%d - %d, %d' % (i + 1, jj[i], kk[i])
+        ax.text(0.4, 0.5, stext, color='b')
+        ax.grid(True)
+
+    save('pic_7_4_1', fmt='png')
+    save('pic_7_4_1', fmt='pdf')
+
+    plt.show()
 
     return
 def AnalyseData(ARR_im):
