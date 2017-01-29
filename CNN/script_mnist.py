@@ -1,13 +1,10 @@
-'''
-Created on Dec 1, 2016
 
-@author: eao
-'''
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.colors as colors
+import math
 import struct
-from PIL import Image
+from PIL import Image, ImageDraw
 
 from NearestNeighbor import *
 from Backpropagation import *
@@ -36,34 +33,34 @@ def float_to_RGB(f):
 
 
 def PlotSample(ARR_im, ARR_lb,num):
-    for i in xrange(len(ARR_im)):
+
+    # for i in xrange(len(ARR_im)):
+    #     new_img = Image.new("RGB", (28, 28))
+    #     new_img.putdata([float_to_RGB(c) for c in ARR_im[i]])
+    #     draw = ImageDraw.Draw(new_img)
+    #     draw.text((0, 0), str(ARR_lb[i]))
+    #     del draw
+    #     new_img.save("images/out{0}.png".format(i))
+    # Create folder with images
+
+    figure = plt.figure()
+    lenx = len(ARR_im)
+    #lenx = 40
+    for i in range(0, lenx):
         new_img = Image.new("RGB", (28, 28))
         new_img.putdata([float_to_RGB(c) for c in ARR_im[i]])
-        new_img.save("images/out{0}.png".format(i))
-
-    fig = plt.figure()
-     
-    ax1 = plt.subplot2grid((2, 2), (0, 0))
-    ax2 = plt.subplot2grid((2, 2), (0, 1))
-    ax3 = plt.subplot2grid((2, 2), (1, 0))
-    ax4 = plt.subplot2grid((2, 2), (1, 1))
-
-
-    i = -1
-    jj = [0, 0, 1, 1]
-    kk = [0, 1, 0, 1]
-    for ax in fig.axes:
-        i += 1
-        stext = 'ax%d - %d, %d' % (i + 1, jj[i], kk[i])
-        ax.text(0.4, 0.5, stext, color='b')
-        ax.grid(True)
-
-    save('pic_7_4_1', fmt='png')
-    save('pic_7_4_1', fmt='pdf')
-
+        draw = ImageDraw.Draw(new_img)
+        draw.text((0, 0), str(ARR_lb[i]))
+        del draw
+        figure.add_subplot(math.floor(math.sqrt(lenx))+1, math.floor(math.sqrt(lenx))+1, i+1)
+        plt.axis("off")
+        plt.imshow(new_img)
+    # new_img.save("images/out{0}.png".format(i))
+    plt.tight_layout(-1, -1, -7)
     plt.show()
 
     return
+
 def AnalyseData(ARR_im):
     util.exit_with_error("COMPLETE THE FUNCTION ACCORDING TO LABSPEC!!\n")
     
