@@ -1,0 +1,41 @@
+import math
+import numpy as np
+import CMM
+
+class sequenceCMM:
+    def __init__(self, seq):
+        self.sequence = list(seq)
+        self.T = len(self.sequence)
+        self.CMM = None
+        self.A = math.floor(max(self.sequence)+1)
+
+    def __init__(self, seq, cmm):
+        self.sequence = list(seq)
+        self.T = len(self.sequence)
+        self.CMM = cmm
+        if cmm.N<max(self.sequence):
+            raise Exception("Error. Value of sequence doesn't belong this HMM.")
+        self.A = self.CMM.N
+
+    def __init__(self, name_file="data.txt"):
+        """ Initilization from fyle "name_file"
+            Sequence of values, which should be in [0,A).
+         """
+        file = open(name_file, mode='r')
+        self.sequence = np.array([int(x) for x in file.readline().split(" ") if x.isdigit()])
+        self.T = len(self.sequence)
+        self.A = math.floor(max(self.sequence) + 1)
+        self.CMM = None
+
+    def setCMM(self, cmm):
+        if cmm.N<self.A:
+            raise Exception("Error. Value of sequence doesn't belong this CMM.")
+        self.CMM = cmm
+        self.A = self.CMM.N
+
+    def seteyeCMM(self, N):
+        if N<self.A:
+            raise Exception("Error. Value of sequence doesn't belong this CMM.")
+        self.CMM = CMM.CMM(N)
+        self.A = self.CMM.N
+

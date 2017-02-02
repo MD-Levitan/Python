@@ -1,8 +1,8 @@
 import numpy as np
-import sequenceHMM as sH
+import sequenceHMM
 import HMM
 
-def forwardalgorithm_HMM(sequence):
+def forwardalgorithm(sequence):
     if sequence.HMM == None:
         raise Exception("Error. HMM is not identified.")
 
@@ -13,8 +13,7 @@ def forwardalgorithm_HMM(sequence):
         alphaset.extend([alphat])
     return alphaset
 
-def backwardalgorithm_HMM(sh):
-    sequence = (sh)
+def backwardalgorithm(sequence):
     if sequence.HMM == None:
         raise Exception("Error. HMM is not identified.")
 
@@ -75,8 +74,8 @@ def estimationinitialprobability(sequence):
     :param sequence: hidden sequence which we estimate.
     :return: estimated array PI.
     """
-    alphaset = forwardalgorithm_HMM(sequence)
-    betaset = backwardalgorithm_HMM(sequence)
+    alphaset = forwardalgorithm(sequence)
+    betaset = backwardalgorithm(sequence)
     gammaset = marginalprobability(sequence, alphaset, betaset)
     Pi = [round(x,4) for x in gammaset[0]]
     return Pi
@@ -87,8 +86,8 @@ def estiamtionmatrixofprobability(sequence):
     :param sequence: hidden sequence which we estimate.
     :return: estimated matrix P.
     """
-    alphaset = forwardalgorithm_HMM(sequence)
-    betaset = backwardalgorithm_HMM(sequence)
+    alphaset = forwardalgorithm(sequence)
+    betaset = backwardalgorithm(sequence)
     gammaset = marginalprobability(sequence, alphaset, betaset)
     ksiset = doubleprobability(sequence, alphaset, betaset)
     print(alphaset)
@@ -106,8 +105,8 @@ def estiamtiontransitionmatrix(sequence):
     :param sequence: hidden sequence which we estimate.
     :return: estimated transition matrix C.
     """
-    alphaset = forwardalgorithm_HMM(sequence)
-    betaset = backwardalgorithm_HMM(sequence)
+    alphaset = forwardalgorithm(sequence)
+    betaset = backwardalgorithm(sequence)
     gammaset = marginalprobability(sequence, alphaset, betaset)
     C = np.array([[round(sum(gammaset[t][i] for t in range(0, sequence.T -1) if sequence.sequence[t] == j)
                    / sum(gammaset[t][i] for t in range(0, sequence.T - 1)), 4) for i in range(0, sequence.A)]
@@ -123,12 +122,12 @@ def generalestimation(sequence):
     return [estimationinitialprobability(sequence), estiamtionmatrixofprobability(sequence),
             estiamtiontransitionmatrix(sequence)]
 
-a=sH.sequenceHMM()
+a=sequenceHMM.sequenceHMM()
 b=HMM.HMM()
 a.seteyeHMM(2,2)
 # print(a)
-alpha = forwardalgorithm_HMM(a)
-beta = backwardalgorithm_HMM(a)
+alpha = forwardalgorithm(a)
+beta = backwardalgorithm(a)
 print(estimationsequenceforward(a, alpha))
 print(estimationsequenceforward_backawrd(a, alpha, beta))
 est = generalestimation(a)

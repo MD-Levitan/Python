@@ -3,12 +3,12 @@ import numpy as np
 
 class HMM:
     def __init__(self, N=None, M=None, Pi=None, P=None, C=None, name_file="HMM.txt"):
-        if N == None or M == None:
+        if N is None or M is None:
             self.initfromfile(name_file)
             return
         self.N = N
         self.M = M
-        if Pi == None or P == None or C == None:
+        if Pi is None or P is None or C is None:
             self.initrandomarg(N, M)
             return
         self.Pi = Pi
@@ -18,10 +18,10 @@ class HMM:
     def initrandomarg(self, N, M):
         self.N = N
         self.M = M
-        self.P = np.ones((N,N))/N
+        self.P = np.ones((N, N))/N
         self.Pi = [1/N]*N
         self.Pi = np.array(self.Pi)
-        self.C = np.ones((N,M))/N
+        self.C = np.ones((N, M))/N
 
 
     def initfromfile(self, name_file):
