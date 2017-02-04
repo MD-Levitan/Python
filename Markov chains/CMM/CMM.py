@@ -1,5 +1,6 @@
 import numpy as np
 
+
 class CMM:
     def __init__(self, N=None, Pi=None, P=None, name_file="CMM.txt"):
         if N is None:
@@ -12,13 +13,13 @@ class CMM:
         self.Pi = Pi
         self.P = P
 
-    def initrandomarg(self, N):
+    def init_random_arg(self, N):
         self.N = N
         self.P = np.ones((N, N))/N
         self.Pi = [1/N]*N
         self.Pi = np.array(self.Pi)
 
-    def initfromfile(self, name_file):
+    def init_from_file(self, name_file):
         """ Initilization from fyle "name_file"
             First line: N
             Second line: Pi (transposed)

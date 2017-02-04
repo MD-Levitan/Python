@@ -2,7 +2,8 @@ import math
 import numpy as np
 import CMM
 
-class sequenceCMM:
+
+class SequenceCMM:
     def __init__(self, seq, A=None, cmm=None, name_file="data.txt"):
         if cmm is None:
             self.sequence = list(seq)
@@ -23,7 +24,7 @@ class sequenceCMM:
             raise Exception("Error. Value of sequence doesn't belong this HMM.")
         self.A = self.CMM.N
 
-    def initfromfile(self, name_file="data.txt"):
+    def init_from_file(self, name_file="data.txt"):
         """ Initilization from fyle "name_file"
             Sequence of values, which should be in [0,A).
          """
@@ -33,13 +34,13 @@ class sequenceCMM:
         self.A = math.floor(max(self.sequence) + 1)
         self.CMM = None
 
-    def setCMM(self, cmm):
+    def set_CMM(self, cmm):
         if cmm.N<self.A:
             raise Exception("Error. Value of sequence doesn't belong this CMM.")
         self.CMM = cmm
         self.A = self.CMM.N
 
-    def seteyeCMM(self, N):
+    def set_eye_CMM(self, N):
         if N<self.A:
             raise Exception("Error. Value of sequence doesn't belong this CMM.")
         self.CMM = CMM.CMM(N)
