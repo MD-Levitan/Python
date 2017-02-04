@@ -26,7 +26,7 @@ class CMM:
             Elements of Pi, P are from [0,1].
         """
         file = open(name_file, mode='r')
-        self.n = int(file.read(1))
+        self.N = int(file.read(1))
         file.readline()
         self.Pi = np.array([float(x) for x in file.readline().split(" ") if not x.isalpha()])
         self.P = np.zeros((self.N, self.N), dtype=float)
@@ -34,4 +34,4 @@ class CMM:
             self.P[i] = np.array([float(x) for x in file.readline().split(" ") if not x.isalpha()])
 
     def __str__(self, ):
-        return "Pi: "+str(self.Pi)+"\nP: "+str(self.P)+"\nC: "+str(self.C)
+        return "Pi: "+str(self.Pi)+"\nP: "+str(self.P)

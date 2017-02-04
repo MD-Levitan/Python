@@ -3,21 +3,24 @@ import numpy as np
 import CMM
 
 class sequenceCMM:
-    def __init__(self, seq):
-        self.sequence = list(seq)
-        self.T = len(self.sequence)
-        self.CMM = None
-        self.A = math.floor(max(self.sequence)+1)
-
-    def __init__(self, seq, cmm):
+    def __init__(self, seq, cmm=None, name_file="data.txt"):
+        if cmm is None:
+            self.sequence = list(seq)
+            self.T = len(self.sequence)
+            self.CMM = None
+            self.A = math.floor(max(self.sequence)+1)
+            return
+        if seq is None:
+            self.initfromfile(name_file)
+            return
         self.sequence = list(seq)
         self.T = len(self.sequence)
         self.CMM = cmm
-        if cmm.N<max(self.sequence):
+        if cmm.N < max(self.sequence):
             raise Exception("Error. Value of sequence doesn't belong this HMM.")
         self.A = self.CMM.N
 
-    def __init__(self, name_file="data.txt"):
+    def initfromfile(self, name_file="data.txt"):
         """ Initilization from fyle "name_file"
             Sequence of values, which should be in [0,A).
          """

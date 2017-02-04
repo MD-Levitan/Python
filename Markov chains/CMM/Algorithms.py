@@ -2,35 +2,77 @@ import numpy as np
 import CMM
 import sequenceCMM
 import random
-import sys
-
-
 
 def MLEalgorithm(sequence):
-    sequencewithoutlast = list(sequence)[:-1]
-    n = [sequencewithoutlast.count(x) for x in sequence]
-    P = np.arange([[transition(sequence, i, j) for i in range(0, sequence.a)] for j in range(0, sequence.A)])
+    """
+    Algorithm that calculates maximum likehood estimation of one-step transition matrix.
+    :param sequence: sequence of elements in range (0, A). Can be instance of sequenceCMM class, but if not, then it
+    will be transformed in such instance.
+    :return: Maximum likehood estimation of one-step transition matrix - it's a matrix of size AxA.
+    """
+    np.seterr(divide='ignore', invalid='ignore')
+    if not isinstance(sequence, sequenceCMM.sequenceCMM):
+        sequence = sequenceCMM.sequenceCMM(sequence)
+    n = np.array([list(sequence.sequence)[:-1].count(x) for x in range(0, sequence.A)])
+    n.shape = (sequence.A, 1)
+    P = np.array([[transition(sequence, i, j) for j in range(0, sequence.A)] for i in range(0, sequence.A)])
     P = P/n
     for i in range(0, sequence.A):
         if n[i] == 0:
-            P[i] = np.eye(sequence.A, 1, i)
+            eye = np.eye(sequence.A, 1, i)
+            eye.shape = sequence.A
+            P[i] = eye
     return P
 
-def generateCMM(A, P, Pi, T=0):
+def transition(sequence, i, j):
+    return sum([1 for t in range(0, sequence.T-1) if sequence.sequence[t] == i and sequence.sequence[t+1] == j])
+
+def choosenumber(array):
+    csprng = random.SystemRandom()
+    random_double = csprng.randint(0, 1000) / 1000
+    arraywithnum = list(zip([x for x in range(0, len(array))], array))
+    for counter in range(0, len(array)):
+        if random_double <= sum(x[1] for x in arraywithnum[:counter+1]) \
+                or (1 <= random_double and 1 <= sum(x[1] for x in arraywithnum[:counter+1])):
+            return arraywithnum[counter][0]
+
+def generateCMM(Pi, P, T):
     """
     Generate Markov Chain, using one-step transition matrix P and initial matrix Pi.
-    :param A: (0,..,A) - set of values.
     :param P: one-step transition matrix.
     :param Pi: initial matrix.
-    :param T: length of generated sequence.
-    :return: list(sequence CMM)
+    :param T: length of sequence.
+    :return: sequence CMM.
     """
-    csprng = random.SystemRandom()
-    random_int = csprng.randint(0, sys.maxint)
+    initial_val = choosenumber(Pi)
+    counter = choosenumber(P[initial_val])
+    sequence = [initial_val, counter]
+    for i in range(0, T-2):
+        counter = choosenumber(P[counter])
+        sequence.append(counter)
+    return sequence
 
-def transition(sequence, i, j):
-    return sum([1 for t in sequence.T-1 if sequence[t] == i and sequence[t+1] == j])
-
-def bootstrap(sequence):
-    #Maximum likehood estimation of transition matrix
+def bootstrap(sequence, M=1000):
+    """
+    Bootstrap algorithm which calculates one-step transition matrix, using bootstrap sequences, that is generated, using
+    MLE of one-step transition matrix.
+    :param sequence: sequence of elements in range (0, A). Can be instance of sequenceCMM class, but if not, then it
+    will be transformed in such instance.
+    :return: one-step transition matrix.
+    """
+    Pi_mle = np.array([0.2, 0.6, 0.2])
     P_mle = MLEalgorithm(sequence)
+    randominstance = random.SystemRandom()
+    bootstraps = [generateCMM(Pi_mle, P_mle, randominstance.randint(50, 256)) for x in range(0, M)]
+    bootstrappedP = [MLEalgorithm(x) for x in bootstraps]
+    averageP = sum(bootstrappedP)/M
+    return averageP
+
+
+cmm = CMM.CMM()
+print(cmm)
+sequence = generateCMM(cmm.Pi, cmm.P, 5)
+print(sequence)
+print(MLEalgorithm(sequence))
+# a = bootstrap(sequence)
+# print(a)
