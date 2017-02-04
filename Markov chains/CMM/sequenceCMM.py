@@ -3,12 +3,15 @@ import numpy as np
 import CMM
 
 class sequenceCMM:
-    def __init__(self, seq, cmm=None, name_file="data.txt"):
+    def __init__(self, seq, A=None, cmm=None, name_file="data.txt"):
         if cmm is None:
             self.sequence = list(seq)
             self.T = len(self.sequence)
             self.CMM = None
-            self.A = math.floor(max(self.sequence)+1)
+            if A is None:
+                self.A = math.floor(max(self.sequence)+1)
+            else:
+                self.A = A
             return
         if seq is None:
             self.initfromfile(name_file)
