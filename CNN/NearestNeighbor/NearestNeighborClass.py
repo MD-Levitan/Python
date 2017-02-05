@@ -70,8 +70,8 @@ class NearestNeighborClass(object):
     def train(self, x, y):
         """ X is N x D where each row is an example. Y is 1-dimension of size N """
         # the nearest neighbor classifier simply remembers all the training data
-        self.xtr = x[:9000]
-        self.ytr = y[:9000]
+        self.xtr = x
+        self.ytr = y
 
     def cross_validation(self, number=3, max_value=100):
         if self.xtr is None or self.ytr is None:
@@ -82,10 +82,9 @@ class NearestNeighborClass(object):
         folders.append(self.xtr[(number-1)*length_folder:])
         label_folders.append(self.ytr[(number-1)*length_folder:])
         accuracy_values = []
-        for k in range(2, max_value):
+        for k in range(1, max_value):
             accuracy = []
-            # for folder_counter in xrange(number):
-            for folder_counter in xrange(1):
+            for folder_counter in xrange(number):
                 nn = NearestNeighborClass()
                 X = None
                 Y = None

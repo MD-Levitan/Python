@@ -86,7 +86,7 @@ def AnalyseData(ARR_im):
 
 nn = NearestNeighborClass()
 nn.train(Train_images, Train_labels)  # train the classifier on the training images and labels
-nn.cross_validation(number=3, max_value=30)
+nn.cross_validation(number=3, max_value=50)
 
 #Labels_predict = nn.predictL2(Valid_images) # predict labels on the test images
 # and now print the classification accuracy, which is the average number
