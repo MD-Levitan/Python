@@ -1,5 +1,15 @@
+import fipy
+
+
 class Polynomial (object):
+
+    @staticmethod
+    def init_rr(factors):
+        self
+
+
     def __init__(self, factors=[0]):
+        if
         self.factors = factors
 
     def add(self, polynomial):
@@ -78,40 +88,4 @@ class Polynomial (object):
         return result
 
 
-	# constructor (factors = [0]) {
-	# 	if (!Array.isArray(factors)) {
-	# 		factors = factors.split('').map(x => parseInt(x))
-	# 	} else {
-	# 	    factors = factors.slice()
-     #    }
-    #
-	# 	let usefulFactorsEnd = 0
-     #    for (let i = factors.length - 1; i >= 0; i--) {
-	# 	    if (factors[i] == 1) {
-	# 	        usefulFactorsEnd = i
-     #            break
-     #        }
-     #    }
-    #
-     #    factors = factors.splice(0, usefulFactorsEnd + 1)
-     #    if (factors.length == 0) {
-	# 	    factors = [0]
-     #    }
-    #
-     #    this.factors = factors
-	# }
-    #
-	# inspect () {
-	# 	return `Polynomial(${this.factors.join('')})`
-	# }
-
-
-
-
-
-Polynomial.module = Polynomial([1, 1, 0, 1])
-
-
-a = Polynomial('011')
-b = Polynomial('011')
-
+Polynomial.
